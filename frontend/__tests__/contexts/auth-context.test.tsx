@@ -1,4 +1,4 @@
-import { renderHook, waitFor } from "@testing-library/react";
+import { renderHook, waitFor, act } from "@testing-library/react";
 import { AuthProvider, useAuth } from "@/contexts/auth-context";
 import { apiClient } from "@/lib/api-client";
 import React from "react";
@@ -27,7 +27,7 @@ describe("AuthContext", () => {
     jest.clearAllMocks();
   });
 
-  it("should provide auth context", () => {
+  it("should provide auth context", async () => {
     (apiClient.isAuthenticated as jest.Mock).mockReturnValue(false);
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
@@ -36,9 +36,13 @@ describe("AuthContext", () => {
 
     const { result } = renderHook(() => useAuth(), { wrapper });
 
+    // Wait for initial loading to complete
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
+
     expect(result.current).toBeDefined();
     expect(result.current.user).toBeNull();
-    expect(result.current.loading).toBe(false);
   });
 
   it("should handle login", async () => {
@@ -63,7 +67,9 @@ describe("AuthContext", () => {
 
     const { result } = renderHook(() => useAuth(), { wrapper });
 
-    await result.current.login("test@example.com", "password");
+    await act(async () => {
+      await result.current.login("test@example.com", "password");
+    });
 
     await waitFor(() => {
       expect(apiClient.login).toHaveBeenCalledWith({
@@ -96,18 +102,20 @@ describe("AuthContext", () => {
 
     const { result } = renderHook(() => useAuth(), { wrapper });
 
-    await result.current.signup(
-      "new@example.com",
-      "newuser",
-      "password123"
-    );
+    await act(async () => {
+      await result.current.signup(
+        "new@example.com",
+        "newuser",
+        "password123"
+      );
+    });
 
     await waitFor(() => {
       expect(apiClient.signup).toHaveBeenCalledWith({
         email: "new@example.com",
         username: "newuser",
         password: "password123",
-        full_name: undefined,
+        full_name: null, // Changed from undefined to null (fullName || null)
       });
     });
   });

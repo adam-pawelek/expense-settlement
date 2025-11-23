@@ -14,6 +14,7 @@ RUN uv sync
 
 # Copy application code
 COPY src/ ./src/
+COPY uv.lock ./
 
 # Expose port
 EXPOSE 8000
