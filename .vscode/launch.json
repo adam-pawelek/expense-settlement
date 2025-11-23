@@ -1,0 +1,291 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Backend: FastAPI (Python)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": [
+        "src.app.main:app",
+        "--reload",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8008"
+      ],
+      "jinja": true,
+      "justMyCode": false,
+      "cwd": "${workspaceFolder}/backend",
+      "env": {
+        "DATABASE_URL": "postgresql://expense_user:expense_password@localhost:5432/expense_settlement",
+        "SECRET_KEY": "dev-secret-key-change-in-production",
+        "ALGORITHM": "HS256",
+        "ACCESS_TOKEN_EXPIRE_MINUTES": "30",
+        "API_V1_PREFIX": "/api/v1"
+      },
+      "console": "integratedTerminal",
+      "python": "${command:python.interpreterPath}",
+      "preLaunchTask": "Start PostgreSQL (Docker)"
+    },
+    {
+      "name": "Backend: FastAPI (Python - Windows)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": [
+        "src.app.main:app",
+        "--reload",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8008"
+      ],
+      "jinja": true,
+      "justMyCode": false,
+      "cwd": "${workspaceFolder}/backend",
+      "env": {
+        "DATABASE_URL": "postgresql://expense_user:expense_password@localhost:5432/expense_settlement",
+        "SECRET_KEY": "dev-secret-key-change-in-production",
+        "ALGORITHM": "HS256",
+        "ACCESS_TOKEN_EXPIRE_MINUTES": "30",
+        "API_V1_PREFIX": "/api/v1"
+      },
+      "console": "integratedTerminal",
+      "python": "${command:python.interpreterPath}",
+      "preLaunchTask": "Start PostgreSQL (Docker)"
+    },
+    {
+      "name": "Backend: FastAPI (Python - UV)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": [
+        "src.app.main:app",
+        "--reload",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8008"
+      ],
+      "jinja": true,
+      "justMyCode": false,
+      "cwd": "${workspaceFolder}/backend",
+      "env": {
+        "DATABASE_URL": "postgresql://expense_user:expense_password@localhost:5432/expense_settlement",
+        "SECRET_KEY": "dev-secret-key-change-in-production",
+        "ALGORITHM": "HS256",
+        "ACCESS_TOKEN_EXPIRE_MINUTES": "30",
+        "API_V1_PREFIX": "/api/v1"
+      },
+      "console": "integratedTerminal",
+      "python": "${command:python.interpreterPath}",
+      "preLaunchTask": "Start PostgreSQL (Docker)"
+    },
+    {
+      "name": "Backend: Python Tests",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": [
+        "tests",
+        "-v",
+        "-s"
+      ],
+      "jinja": true,
+      "justMyCode": false,
+      "cwd": "${workspaceFolder}/backend",
+      "console": "integratedTerminal",
+      "python": "${command:python.interpreterPath}"
+    },
+    {
+      "name": "Backend: Python Tests (Windows)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": [
+        "tests",
+        "-v",
+        "-s"
+      ],
+      "jinja": true,
+      "justMyCode": false,
+      "cwd": "${workspaceFolder}/backend",
+      "console": "integratedTerminal",
+      "python": "${command:python.interpreterPath}"
+    },
+    {
+      "name": "Frontend: Next.js",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "cwd": "${workspaceFolder}/frontend",
+      "env": {
+        "NEXT_PUBLIC_API_URL": "http://localhost:8008",
+        "PORT": "3003"
+      },
+      "console": "integratedTerminal",
+      "serverReadyAction": {
+        "pattern": "- Local:.+(https?://.+)",
+        "uriFormat": "%s",
+        "action": "debugWithChrome"
+      },
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    },
+    {
+      "name": "Frontend: Next.js (Windows)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm.cmd",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "cwd": "${workspaceFolder}/frontend",
+      "env": {
+        "NEXT_PUBLIC_API_URL": "http://localhost:8008",
+        "PORT": "3003"
+      },
+      "console": "integratedTerminal",
+      "serverReadyAction": {
+        "pattern": "- Local:.+(https?://.+)",
+        "uriFormat": "%s",
+        "action": "debugWithChrome"
+      },
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    },
+    {
+      "name": "Frontend: Next.js Debug",
+      "type": "node",
+      "request": "attach",
+      "port": 9229,
+      "cwd": "${workspaceFolder}/frontend",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    },
+    {
+      "name": "Frontend: Jest Tests",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "${workspaceFolder}/frontend/node_modules/.bin/jest",
+      "runtimeArgs": [
+        "--runInBand",
+        "--no-cache"
+      ],
+      "cwd": "${workspaceFolder}/frontend",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "name": "Frontend: Jest Tests (Windows)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "${workspaceFolder}/frontend/node_modules/.bin/jest.cmd",
+      "runtimeArgs": [
+        "--runInBand",
+        "--no-cache"
+      ],
+      "cwd": "${workspaceFolder}/frontend",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "name": "Client Library: Vitest Tests",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "test",
+        "--",
+        "--run"
+      ],
+      "cwd": "${workspaceFolder}/client-library",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    },
+    {
+      "name": "Client Library: Vitest Tests (Windows)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm.cmd",
+      "runtimeArgs": [
+        "test",
+        "--",
+        "--run"
+      ],
+      "cwd": "${workspaceFolder}/client-library",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full Stack: Backend + Frontend",
+      "configurations": [
+        "Backend: FastAPI (Python)",
+        "Frontend: Next.js"
+      ],
+      "preLaunchTask": "Full Stack: Pre-Launch",
+      "presentation": {
+        "hidden": false,
+        "group": "1",
+        "order": 1
+      },
+      "stopAll": true
+    },
+    {
+      "name": "Full Stack: Backend + Frontend (Windows)",
+      "configurations": [
+        "Backend: FastAPI (Python - Windows)",
+        "Frontend: Next.js (Windows)"
+      ],
+      "preLaunchTask": "Full Stack: Pre-Launch",
+      "presentation": {
+        "hidden": false,
+        "group": "1",
+        "order": 2
+      },
+      "stopAll": true
+    },
+    {
+      "name": "All Tests",
+      "configurations": [
+        "Backend: Python Tests",
+        "Frontend: Jest Tests",
+        "Client Library: Vitest Tests"
+      ],
+      "presentation": {
+        "hidden": false,
+        "group": "2",
+        "order": 1
+      },
+      "stopAll": true
+    }
+  ]
+}
+

@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: expense_settlement_postgres_dev
+    environment:
+      POSTGRES_USER: expense_user
+      POSTGRES_PASSWORD: expense_password
+      POSTGRES_DB: expense_settlement
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U expense_user -d expense_settlement"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - expense_network_dev
+
+  adminer:
+    image: adminer:latest
+    container_name: expense_settlement_adminer_dev
+    ports:
+      - "8080:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+    depends_on:
+      - postgres
+    networks:
+      - expense_network_dev
+    restart: unless-stopped
+
+networks:
+  expense_network_dev:
+    driver: bridge
+
+volumes:
+  postgres_dev_data:
+
