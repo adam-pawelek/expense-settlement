@@ -8,6 +8,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
 # Copy dependency files
 COPY pyproject.toml ./
+COPY README.md ./
 
 # Install dependencies
 RUN uv sync
@@ -17,8 +18,8 @@ COPY src/ ./src/
 COPY uv.lock ./
 
 # Expose port
-EXPOSE 8000
+EXPOSE 8004
 
 # Run the application
-CMD ["uv", "run", "uvicorn", "src.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uv", "run", "uvicorn", "src.app.main:app", "--host", "0.0.0.0", "--port", "8004"]
 

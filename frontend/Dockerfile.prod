@@ -1,19 +1,45 @@
 FROM node:20-alpine AS base
 
+# Build client library first
+FROM base AS client-builder
+WORKDIR /app/client-library
+COPY client-library/package.json client-library/package-lock.json* ./
+COPY client-library/tsconfig.json ./
+COPY client-library/src ./src
+RUN npm ci && npm run build
+
 # Install dependencies only when needed
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Copy package files
-COPY package.json package-lock.json* ./
-RUN npm ci
+# Copy client library (needed for file: dependency resolution)
+# The client-library needs to be a sibling of frontend
+COPY --from=client-builder /app/client-library ./client-library
+
+# Copy frontend package files
+WORKDIR /app/frontend
+COPY frontend/package.json frontend/package-lock.json* ./
+RUN npm ci --legacy-peer-deps
 
 # Rebuild the source code only when needed
 FROM base AS builder
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+# Copy client library (must be sibling to frontend for file: dependency)
+COPY --from=client-builder /app/client-library ./client-library
+WORKDIR /app/frontend
+# Copy frontend source code first (before modifying node_modules)
+COPY frontend/ .
+# Install dependencies (this will properly link the client-library)
+RUN npm ci --legacy-peer-deps
+# Ensure client-library is physically present (not just a symlink)
+# Remove any symlink and copy the actual files
+RUN rm -rf node_modules/@expense-settlement/client && \
+    mkdir -p node_modules/@expense-settlement && \
+    cp -r ../client-library node_modules/@expense-settlement/client && \
+    test -f node_modules/@expense-settlement/client/dist/index.js || (echo "ERROR: dist/index.js missing" && exit 1) && \
+    test -f node_modules/@expense-settlement/client/package.json || (echo "ERROR: package.json missing" && exit 1)
 
 # Set environment variables for build
 ENV NEXT_TELEMETRY_DISABLED 1
@@ -33,18 +59,18 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # Copy necessary files
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/frontend/public ./public
+COPY --from=builder /app/frontend/package.json ./package.json
 
 # Copy built application
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/frontend/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/frontend/.next/static ./.next/static
 
 USER nextjs
 
-EXPOSE 3000
+EXPOSE 3004
 
-ENV PORT 3000
+ENV PORT 3004
 ENV HOSTNAME "0.0.0.0"
 
 CMD ["node", "server.js"]

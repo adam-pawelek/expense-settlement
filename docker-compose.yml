@@ -26,7 +26,7 @@ services:
       dockerfile: Dockerfile
     container_name: expense_settlement_backend
     ports:
-      - "8000:8000"
+      - "8004:8004"
     environment:
       DATABASE_URL: postgresql://expense_user:expense_password@postgres:5432/expense_settlement
       SECRET_KEY: your-secret-key-change-in-production-use-a-strong-random-key
@@ -38,7 +38,7 @@ services:
         condition: service_healthy
     volumes:
       - ./backend/src:/app/src
-    command: sh -c "uv run python src/app/db_wait.py && uv run uvicorn src.app.main:app --host 0.0.0.0 --port 8000 --reload"
+    command: sh -c "uv run python src/app/db_wait.py && uv run uvicorn src.app.main:app --host 0.0.0.0 --port 8004 --reload"
     networks:
       - expense_network
     restart: unless-stopped
@@ -49,9 +49,9 @@ services:
       dockerfile: Dockerfile
     container_name: expense_settlement_frontend
     ports:
-      - "3000:3000"
+      - "3004:3004"
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8000
+      NEXT_PUBLIC_API_URL: http://localhost:8004
       WATCHPACK_POLLING: "true"
     depends_on:
       - backend

@@ -27,7 +27,7 @@ services:
       dockerfile: Dockerfile
     container_name: expense_settlement_backend
     ports:
-      - "${BACKEND_PORT:-8000}:8000"
+      - "${BACKEND_PORT:-8004}:8004"
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-expense_user}:${POSTGRES_PASSWORD:-expense_password}@postgres:5432/${POSTGRES_DB:-expense_settlement}
       SECRET_KEY: ${SECRET_KEY:-your-secret-key-change-in-production}
@@ -43,13 +43,14 @@ services:
 
   frontend:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile.prod
+      context: .
+      dockerfile: frontend/Dockerfile.prod
     container_name: expense_settlement_frontend
     ports:
-      - "${FRONTEND_PORT:-3000}:3000"
+      - "${FRONTEND_PORT:-3004}:3004"
     environment:
-      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8004}
+      PORT: 3004
     depends_on:
       - backend
     networks:
