@@ -45,6 +45,8 @@ services:
     build:
       context: .
       dockerfile: frontend/Dockerfile.prod
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8004}
     container_name: expense_settlement_frontend
     ports:
       - "${FRONTEND_PORT:-3004}:3004"

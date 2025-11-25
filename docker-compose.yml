@@ -51,7 +51,7 @@ services:
     ports:
       - "3004:3004"
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8004
+      NEXT_PUBLIC_API_URL: http://backend:8004
       WATCHPACK_POLLING: "true"
     depends_on:
       - backend

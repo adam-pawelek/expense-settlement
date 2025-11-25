@@ -40,7 +40,7 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     """Token data schema."""
-    username: Optional[str] = None
+    user_id: Optional[int] = None
 
 
 # Group Schemas
