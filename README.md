@@ -16,6 +16,58 @@ A comprehensive full-stack application for managing group expenses and settlemen
 - **uv**: Python package manager (recommended).
 - **VS Code / Cursor**: Recommended IDE.
 
+## 📦 Environment Setup
+
+To run the project locally (especially for VS Code / Cursor debugging), you need to set up your environment.
+
+### 1. Install Node.js (v20+)
+
+**Linux / macOS (using nvm - recommended):**
+```bash
+# Install nvm (if not already installed)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
+# Close and reopen terminal, then install Node.js v20
+nvm install 20
+nvm use 20
+```
+
+**Windows:**
+- Download and install from [nodejs.org](https://nodejs.org/).
+- Alternatively, use `nvm-windows`.
+
+### 2. Install uv (Python Package Manager)
+
+`uv` is used to manage Python dependencies and virtual environments.
+
+**Linux / macOS:**
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+**Windows:**
+```powershell
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+### 3. Install Dependencies
+
+After installing Node.js and uv, install the project dependencies:
+
+```bash
+# Backend
+cd backend
+uv sync
+
+# Client Library
+cd ../client-library
+npm install
+
+# Frontend
+cd ../frontend
+npm install
+```
+
 ---
 
 ## 🚀 Quick Start: VS Code / Cursor Debugging
